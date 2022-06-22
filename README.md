@@ -1,5 +1,7 @@
 # pygrad
 
+**This repo is work in progress**
+
 A minimal*, fast**, scalar-valued, dependency-free Python library for automatic differentiation***.
 
 *pygrad* implements backpropagation using reverse-mode automatic differentiation over a dynamically
