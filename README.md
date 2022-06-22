@@ -5,7 +5,12 @@
 A minimal*, fast**, scalar-valued, dependency-free Python library for automatic differentiation***.
 
 *pygrad* implements backpropagation using reverse-mode automatic differentiation over a dynamically
-built directed acyclic graph.
+built directed acyclic graph (DAG).
+
+The `Value` class represents a scalar-valued node with associated operations in a directed acyclic 
+graph. Every operation performed on an instance of `Value` consists of the corresponding computation
+of a new `data` field stored in a new `Value` instance and is added to the computational graph along
+with its gradients required for the backward pass.
 
 ## Example Usage
 
