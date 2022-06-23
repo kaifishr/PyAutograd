@@ -5,6 +5,8 @@ dynamically built directed acyclic graph (DAG).
 
     Typical usage example:
 
+    .. code:: python
+
         from pygrad.engine import Value
 
         a = Value(data=2.0)
@@ -19,7 +21,7 @@ dynamically built directed acyclic graph (DAG).
 """
 from __future__ import annotations
 
-from math import log, tanh
+from math import tanh
 from typing import Union
 
 
@@ -90,9 +92,9 @@ class Value:
         r"""Implements addition of nodes in a directed acyclic graph.
 
         .. math::
-            f(x, y) = x + y
-            df/dx = 1
-            df/dy = 1
+            f(x, y) = x + y \\
+            \frac{df(x, y)}{dx} = 1 \\
+            \frac{df(x, y)}{dy} = 1
 
         This operation adds two scalar values (forward pass), creates a parent node to store
         the result, adds the gradients associated with the operation to the newly created parent
@@ -120,9 +122,9 @@ class Value:
         r"""Implements subtraction of nodes in a directed acyclic graph.
 
         .. math::
-            f(x, y) = x - y
-            df/dx = 1
-            df/dy = -1
+            f(x, y) = x - y \\
+            \frac{df(x, y)}{dx} = 1 \\
+            \frac{df(x, y)}{dy} = -1
 
         This operation subtracts two scalar values (forward pass), creates a parent node to store
         the result, adds the gradients associated with the operation to the newly created parent
@@ -150,9 +152,9 @@ class Value:
         r"""Implements multiplication of nodes in a directed acyclic graph.
 
         .. math::
-            f(x, y) = x * y
-            df/dx = y
-            df/dy = x
+            f(x, y) = x * y \\
+            \frac{df(x, y)}{dx} = y \\
+            \frac{df(x, y)}{dy} = x
 
         This operation multiplies two scalar values (forward pass), creates a parent node to store
         the result, adds the gradients associated with the operation to the newly created parent
@@ -180,9 +182,9 @@ class Value:
         r"""Implements division of nodes in a directed acyclic graph.
 
         .. math::
-            f(x, y) = x / y
-            df/dx = 1 / y
-            df/dy = - x / y^2
+            f(x, y) = x / y \\
+            \frac{df(x, y)}{dx} = 1 / y \\
+            \frac{df(x, y)}{dy} = - x / y^2
 
         This operation divides two scalar values (forward pass), creates a parent node to store
         the result, adds the gradients associated with the operation to the newly created parent
@@ -210,8 +212,8 @@ class Value:
         r"""Implements power of a node in a directed acyclic graph.
 
         .. math::
-            f(x; n) = x^n
-            df/dx = n * x^(n-1)
+            f(x; n) = x^n \\
+            \frac{df(x)}{dx} = n * x^(n-1)
 
         This operation returns the power of a node (forward pass), creates a parent node to store
         the result, adds the gradient associated with the operation to the newly created parent
@@ -237,8 +239,8 @@ class Value:
         r"""Implements power of a node in a directed acyclic graph.
 
         .. math::
-            f(x) = -1*x
-            df/dx = -1
+            f(x) = -1*x \\
+            \frac{df(x)}{dx} = -1
 
         This operation returns the negation of a node (forward pass), creates a parent node to store
         the result, adds the gradient associated with the operation to the newly created parent
@@ -261,8 +263,8 @@ class Value:
         r"""Implements hyperbolic tangent of a node in a directed acyclic graph.
 
         .. math::
-            f(x) = tanh(x)
-            df/dx = 1 - tanh(x)^2
+            f(x) = tanh(x) \\
+            \frac{df(x)}{dx} = 1 - tanh(x)^2
 
         This operation returns the hyperbolic tangent of a node (forward pass), creates a parent
         node to store the result, adds the gradient associated with the operation to the newly
@@ -285,8 +287,18 @@ class Value:
         r"""Implements ReLU of a node in a directed acyclic graph.
 
         .. math::
-            f(x) = ReLU(x)
-            df/dx = 1 (x > 0) else 0
+            f(x) = \text{ReLU}(x) =
+            \begin{cases}
+              x & x > 0\\
+              0 & \text{else}\\
+            \end{cases}
+
+            \frac{df(x)}{dx} =
+            \begin{cases}
+              1 & x > 0\\
+              0 & \text{else}\\
+            \end{cases}
+
 
         This operation returns the ReLU of a node (forward pass), creates a parent node to store the
         result, adds the gradient associated with the operation to the newly created parent node,
