@@ -1,21 +1,34 @@
 # pygrad
 
-**This repo is work in progress**
+**Work in progress.**
 
 A minimal*, fast**, scalar-valued, dependency-free Python library for automatic differentiation***.
 
-*pygrad* implements backpropagation using reverse-mode automatic differentiation over a dynamically
-built directed acyclic graph (DAG).
+## Automatic differentiation
 
-The `Value` class represents a scalar-valued node with associated operations in a directed acyclic 
-graph. Every operation performed on an instance of `Value` consists of the corresponding computation
-of a new `data` field stored in a new `Value` instance and is added to the computational graph along
-with its gradients required for the backward pass.
+*pygrad* implements backpropagation using 
+[reverse-mode automatic differentiation](https://en.wikipedia.org/wiki/Automatic_differentiation#Reverse_accumulation) over a dynamically
+built directed acyclic graph. The `Value` class represents a scalar-valued node in a directed 
+acyclic graph holding the information about its value, the associated gradient to the value as well 
+as the type of operation from which it was created. 
+
+A new parent node is created for each mathematical operation and added to the computational graph. 
+Each operation includes at least one but not more than two child nodes. Each operation populates the 
+`Value`'s `data` field as well as references to the child nodes required for the backward pass.
+
+## Installation
+
+To use *pygrad*, first install it using *pip*:
+
+```commandline
+cd PyAutograd
+pip install . 
+```
 
 ## Example Usage
 
 ```python
-from pygrad.engine import Value
+from pygrad import Value
 
 a = Value(data=2.0)
 b = Value(data=3.0)
@@ -40,16 +53,25 @@ print(c)    # prints c.data = 4.0, c.grad = -0.8875052618449036
 # ...
 ```
 
+## Documentation
 
+Run the following command to generate the documentation:
+
+```commandline
+cd docs
+sphinx-apidoc -f -o source/ ../pygrad && make html
+```
 
 ## Tests
 
-Yes, there are some tests. But they are by no means complete. You can run them by typing
+Yes, there are some tests. But they are by no means complete. The tests use JAX's autograd engine as
+a reference. You can run them by typing
 
 ```commandline
-cd autograd
+cd PyAutograd 
 pytest tests
 ```
+
 
 ## Licence
 
