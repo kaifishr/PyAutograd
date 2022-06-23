@@ -72,14 +72,19 @@ cd PyAutograd
 pytest tests
 ```
 
+## TODO
+
+- Add private methods to Sphinx documentation.
+- Add image to visualize working principle of backpropagation using DAGs.
+
 
 ## Licence
 
 MIT
 
 ---
-*It's really bare-bones. Just have a look in *engine.py*.
+*It's really bare-bones. Just have a look at *engine.py*.
 
-**Relatively speaking. In Python terms.
+**In Python terms.
 
 ***Use with caution.

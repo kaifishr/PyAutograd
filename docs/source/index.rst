@@ -16,7 +16,6 @@ differentiation.
 .. toctree::
 
    usage
-   pygrad
    modules
 
 
