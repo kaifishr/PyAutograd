@@ -107,6 +107,43 @@ def test_autograd_2():
     assert round(b_grad - b_pg.grad, places) == 0
 
 
+def test_autograd_3():
+
+    def fun(a_, b_):
+        c = a_ - b_
+        d = a_ * b_
+        e = c / d
+        f = e - d
+        return f
+
+    _a = -3.0
+    _b = 5.0
+
+    # PyGrad
+    a = Value(data=_a)
+    b = Value(data=_b)
+
+    out = fun(a, b)
+    out.backward()
+
+    out_pg, a_pg, b_pg = out, a, b
+
+    # Jax
+    a = _a
+    b = _b
+
+    out = fun(a, b)
+
+    a_grad, b_grad = jax.grad(fun, argnums=(0, 1))(a, b)
+
+    # Assert correct forward pass
+    assert round(out - out_pg.data, places) == 0
+
+    # Assert correct gradients
+    assert round(a_grad - a_pg.grad, places) == 0
+    assert round(b_grad - b_pg.grad, places) == 0
+
+
 def test_add():
 
     a_ = 2.0

@@ -24,6 +24,8 @@ from __future__ import annotations
 from math import tanh
 from typing import Union
 
+DEBUG = True
+
 
 class Value:
     r"""This class represents a building block of a dynamically built directed acyclic graph.
@@ -43,6 +45,7 @@ class Value:
         grad_child_1: Gradient associated with first child.
         grad_child_2: Gradient associated with second child.
     """
+    _id = 0
 
     def __init__(self, data: float) -> None:
         """Initializes Value with provided data and zero gradient."""
@@ -64,15 +67,47 @@ class Value:
         self.grad_child_1 = None
         self.grad_child_2 = None
 
+        # Required for backward pass.
+        self._visited = False
+
+        # Debugging
+
+        # Create object id
+        self._id = Value._id
+        Value._id += 1
+
+    def print(self) -> None:
+        """Traverses computational graph and prints each node to console.
+        """
+        print()
+        print(self)
+        self._print_graph(self.child_1)
+        self._print_graph(self.child_2)
+
+    @staticmethod
+    def _print_graph(other: Value) -> None:
+        """Prints node to console.
+
+        Args:
+            other: Child node.
+        """
+        print(other)
+        if other is not None:
+            other._print_graph(other.child_1)
+            other._print_graph(other.child_2)
+
     def backward(self) -> None:
         """Backward pass to compute gradients for each node of the computational graph.
         """
         # Set root node's gradient of directed acyclic graph to 1.0.
         self.grad = 1.0
-        self.traverse(self.child_1, self.grad_child_1)
-        self.traverse(self.child_2, self.grad_child_2)
+        if DEBUG:
+            print("\n")
+            print(self)
+        self._traverse(self.child_1, self.grad_child_1)
+        self._traverse(self.child_2, self.grad_child_2)
 
-    def traverse(self, other: Value, child_grad: float) -> None:
+    def _traverse(self, other: Value, child_grad: float) -> None:
         """Traverses directed acyclic graph and computes gradients for each node.
 
         During the traverse of the computational graph all gradients from operations in which the
@@ -85,8 +120,11 @@ class Value:
         """
         if other is not None:
             other.grad += self.grad * child_grad
-            other.traverse(other.child_1, other.grad_child_1)
-            other.traverse(other.child_2, other.grad_child_2)
+            print(other)
+            other._traverse(other.child_1, other.grad_child_1)
+            other._traverse(other.child_2, other.grad_child_2)
+            if (other.child_1 is not None) and (other.child_2 is not None):
+                other.grad = 0.0
 
     def __add__(self, other: Value) -> Value:
         r"""Implements addition of nodes in a directed acyclic graph.
@@ -202,7 +240,7 @@ class Value:
         out = Value(data=data)
         # Add gradients for both children to parent node for division operation.
         out.grad_child_1 = 1.0 / other.data
-        out.grad_child_2 = -self.data / other.data**2
+        out.grad_child_2 = -self.data / (other.data * other.data)
         # Add both children to parent node for tree traverse.
         out.child_1 = self
         out.child_2 = other
@@ -318,4 +356,4 @@ class Value:
         return out
 
     def __repr__(self) -> str:
-        return f"data = {self.data}\t grad = {self.grad}\t"
+        return f"id = {self._id}\t data = {self.data:.3f}\t grad = {self.grad:.3f}"
