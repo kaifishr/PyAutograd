@@ -120,7 +120,8 @@ class Value:
         """
         if other is not None:
             other.grad += self.grad * child_grad
-            print(other)
+            if DEBUG:
+                print(other)
             other._traverse(other.child_1, other.grad_child_1)
             other._traverse(other.child_2, other.grad_child_2)
             if (other.child_1 is not None) or (other.child_2 is not None):
