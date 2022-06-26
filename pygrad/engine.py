@@ -24,7 +24,7 @@ from __future__ import annotations
 from math import tanh
 from typing import Union
 
-DEBUG = True
+DEBUG = False
 
 
 class Value:
@@ -123,7 +123,7 @@ class Value:
             print(other)
             other._traverse(other.child_1, other.grad_child_1)
             other._traverse(other.child_2, other.grad_child_2)
-            if (other.child_1 is not None) and (other.child_2 is not None):
+            if (other.child_1 is not None) or (other.child_2 is not None):
                 other.grad = 0.0
 
     def __add__(self, other: Value) -> Value:
