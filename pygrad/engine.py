@@ -247,7 +247,7 @@ class Value:
         out.child_2 = other
         return out
 
-    def __pow__(self, power: Union[Value, float, int]) -> Value:
+    def __pow__(self, power: Union[float, int]) -> Value:
         r"""Implements power of a node in a directed acyclic graph.
 
         .. math::

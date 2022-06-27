@@ -3,7 +3,7 @@ import torch
 
 from pygrad.engine import Value
 
-places = 3
+places = 5
 
 
 def test_autograd_1():
@@ -167,8 +167,10 @@ def test_autograd_4():
     out_pg, x_pg, y_pg = out, x_, y_
 
     # PyTorch
-    x_ = torch.tensor([_x], requires_grad=True)
-    y_ = torch.tensor([_y], requires_grad=True)
+    x_ = torch.tensor([_x]).double()
+    y_ = torch.tensor([_y]).double()
+    x_.requires_grad = True
+    y_.requires_grad = True
 
     out = fun(x_, y_)
     out.backward()
@@ -219,12 +221,14 @@ def test_autograd_5():
     out_pg, a_pg, b_pg = out, a_, b_
 
     # PyTorch
-    a_ = torch.tensor([_a], requires_grad=True)
-    b_ = torch.tensor([_b], requires_grad=True)
-    u_ = torch.tensor([_u], requires_grad=True)
-    v_ = torch.tensor([_v], requires_grad=True)
-    w_ = torch.tensor([_w], requires_grad=True)
-    x_ = torch.tensor([_x], requires_grad=True)
+    a_ = torch.tensor([_a]).double()
+    b_ = torch.tensor([_b]).double()
+    u_ = torch.tensor([_u]).double()
+    v_ = torch.tensor([_v]).double()
+    w_ = torch.tensor([_w]).double()
+    x_ = torch.tensor([_x]).double()
+    a_.requires_grad = True
+    b_.requires_grad = True
 
     out = fun(a_, b_, u_, v_, w_, x_)
     out.backward()
