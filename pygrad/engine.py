@@ -67,12 +67,8 @@ class Value:
         self.grad_child_1 = None
         self.grad_child_2 = None
 
-        # Required for backward pass.
-        self._visited = False
-
-        # Debugging
-
-        # Create object id
+        # Create object ID.
+        # Useful for debugging.
         self._id = Value._id
         Value._id += 1
 
