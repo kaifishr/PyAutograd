@@ -1,8 +1,6 @@
 # pygrad
 
-**Work in progress.**
-
-A minimal*, fast**, scalar-valued, dependency-free Python library for automatic differentiation***.
+A minimal, scalar-valued, dependency-free Python library for reverse-mode automatic differentiation.
 
 ## Automatic differentiation
 
@@ -81,10 +79,3 @@ pytest tests
 ## Licence
 
 MIT
-
----
-*It's really bare-bones. Just have a look at *engine.py*.
-
-**In Python terms.
-
-***Use with caution.
